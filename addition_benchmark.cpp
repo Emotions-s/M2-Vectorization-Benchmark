@@ -41,7 +41,7 @@ int main()
 
             for (int i = 0; i < N; i++)
             {
-                c_scalar[i] = a[i] - b[i];
+                c_scalar[i] = a[i] + b[i];
             }
 
             end = std::chrono::high_resolution_clock::now();
@@ -51,9 +51,9 @@ int main()
             for (int i = 0; i < N; i += 4)
             {
                 c_scalar_unroll4[i] = a[i] - b[i];
-                c_scalar_unroll4[i + 1] = a[i + 1] - b[i + 1];
-                c_scalar_unroll4[i + 2] = a[i + 2] - b[i + 2];
-                c_scalar_unroll4[i + 3] = a[i + 3] - b[i + 3];
+                c_scalar_unroll4[i + 1] = a[i + 1] + b[i + 1];
+                c_scalar_unroll4[i + 2] = a[i + 2] + b[i + 2];
+                c_scalar_unroll4[i + 3] = a[i + 3] + b[i + 3];
             }
 
             end = std::chrono::high_resolution_clock::now();
@@ -63,7 +63,7 @@ int main()
 
             for (int i = 0; i < N; i += 4)
             {
-                vst1q_s32(&c_vector[i], vsubq_s32(vld1q_s32(&a[i]), vld1q_s32(&b[i])));
+                vst1q_s32(&c_vector[i], vaddq_s32(vld1q_s32(&a[i]), vld1q_s32(&b[i])));
             }
 
             end = std::chrono::high_resolution_clock::now();
@@ -73,10 +73,10 @@ int main()
 
             for (int i = 0; i < N; i += 16)
             {
-                vst1q_s32(&c_vector_unroll4[i], vsubq_s32(vld1q_s32(&a[i]), vld1q_s32(&b[i])));
-                vst1q_s32(&c_vector_unroll4[i + 4], vsubq_s32(vld1q_s32(&a[i + 4]), vld1q_s32(&b[i + 4])));
-                vst1q_s32(&c_vector_unroll4[i + 8], vsubq_s32(vld1q_s32(&a[i + 8]), vld1q_s32(&b[i + 8])));
-                vst1q_s32(&c_vector_unroll4[i + 12], vsubq_s32(vld1q_s32(&a[i + 12]), vld1q_s32(&b[i + 12])));
+                vst1q_s32(&c_vector_unroll4[i], vaddq_s32(vld1q_s32(&a[i]), vld1q_s32(&b[i])));
+                vst1q_s32(&c_vector_unroll4[i + 4], vaddq_s32(vld1q_s32(&a[i + 4]), vld1q_s32(&b[i + 4])));
+                vst1q_s32(&c_vector_unroll4[i + 8], vaddq_s32(vld1q_s32(&a[i + 8]), vld1q_s32(&b[i + 8])));
+                vst1q_s32(&c_vector_unroll4[i + 12], vaddq_s32(vld1q_s32(&a[i + 12]), vld1q_s32(&b[i + 12])));
             }
 
             end = std::chrono::high_resolution_clock::now();
